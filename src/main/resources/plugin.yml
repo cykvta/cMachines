@@ -1,0 +1,6 @@
+name: cMachines
+version: '${project.version}'
+main: cykuta.cottagemachines.cMachines
+api-version: 1.18
+authors: [ cykuta ]
+depend: [ ItemsAdder ]
