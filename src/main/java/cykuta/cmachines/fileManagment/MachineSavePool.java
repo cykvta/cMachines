@@ -8,18 +8,11 @@ public class MachineSavePool implements Runnable {
 
     @Override
     public void run() {
-        for(Machine machine : MachineInstances.instances.values())
+        for(Machine machine : MachineInstances.machineList)
         {
-            String blockPath = "machines." + MachineData.getName(machine.getLocation());
-            data.setInventoryContent(blockPath, machine.getInventory());
+            data.removeMachine(machine);
+            data.saveMachine(machine);
         }
-
-        for(Machine machine : MachineInstances.removedMachines)
-        {
-            String blockPath = "machines." + MachineData.getName(machine.getLocation());
-            data.removeMachine(blockPath, machine);
-        }
-
         data.saveData();
     }
 }

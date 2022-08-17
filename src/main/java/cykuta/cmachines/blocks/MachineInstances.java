@@ -1,24 +1,26 @@
 package cykuta.cmachines.blocks;
 
-import org.bukkit.Location;
+import cykuta.cmachines.fileManagment.MachineData;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MachineInstances {
-    public static HashMap<Location, Machine> instances = new HashMap<>();
-    public static List<Machine> removedMachines = new ArrayList<Machine>();
+    public static List<Machine> machineList = new ArrayList<Machine>();
 
     public static boolean checkIfMachineExist(Machine machine){
-        return instances.containsValue(machine);
+        return machineList.contains(machine);
     }
 
-    public static boolean checkIfLocationHasMachine(Location loc){
-        return instances.containsKey(loc);
-    }
+    public static void initializeMachineList(){
+        MachineData data = new MachineData();
+        FileConfiguration file = data.getFile();
 
-    public static Machine getMachine(Location loc){
-        return instances.get(loc);
+        if (file.getConfigurationSection("machines") == null) return;
+
+        for(String uuid : file.getConfigurationSection("machines").getKeys(false)){
+            MachineInstances.machineList.add(data.getMachine(uuid));
+        }
     }
 }
