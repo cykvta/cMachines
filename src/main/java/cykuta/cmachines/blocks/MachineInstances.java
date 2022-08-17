@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MachineInstances {
-    public static List<Machine> machineList = new ArrayList<Machine>();
+    public static List<Machine> placedMachines = new ArrayList<>();
+    public static List<Machine> removedMachines = new ArrayList<>();
 
     public static boolean checkIfMachineExist(Machine machine){
-        return machineList.contains(machine);
+        return placedMachines.contains(machine);
     }
 
     public static void initializeMachineList(){
@@ -20,7 +21,7 @@ public class MachineInstances {
         if (file.getConfigurationSection("machines") == null) return;
 
         for(String uuid : file.getConfigurationSection("machines").getKeys(false)){
-            MachineInstances.machineList.add(data.getMachine(uuid));
+            MachineInstances.placedMachines.add(data.getMachine(uuid));
         }
     }
 }

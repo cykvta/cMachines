@@ -6,22 +6,20 @@ import cykuta.cmachines.blocks.MachineType;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.Events.CustomBlockInteractEvent;
 import dev.lone.itemsadder.api.Events.CustomBlockPlaceEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import java.util.Objects;
 
-import static cykuta.cmachines.blocks.MachineInstances.machineList;
+import static cykuta.cmachines.blocks.MachineInstances.placedMachines;
+import static cykuta.cmachines.blocks.MachineInstances.removedMachines;
 
 public class InteractEvent implements Listener {
 
     @EventHandler
     public void onPlayerInteract(CustomBlockInteractEvent e){
         Machine machine = Machine.getMachineByLocation(e.getBlockClicked().getLocation().toBlockLocation());
-        e.getPlayer().sendMessage(""+ machine);
         if (machine == null) return;
 
         // Return if machine is in machine list
@@ -35,14 +33,15 @@ public class InteractEvent implements Listener {
     @EventHandler
     public void onPlayerPlaceMachine(CustomBlockPlaceEvent e){
         MachineType type = null;
+
         for(MachineType i: MachineType.values()) {
             if (!Objects.equals(i.namespacedID, e.getNamespacedID())) break;
             type = i;
         }
         if (type == null) return;
 
-        Machine machine = Machine.createMachineByType(type, e.getBlock().getLocation());
-        machineList.add(machine);
+        Machine machine = Machine.createMachineByType(type, e.getBlock().getLocation().toBlockLocation());
+        placedMachines.add(machine);
     }
 
     @EventHandler
@@ -53,9 +52,10 @@ public class InteractEvent implements Listener {
         if (block == null) return;
 
         // Check if is machine
-        Machine machine = Machine.getMachineByLocation(e.getBlock().getLocation().toBlockLocation());
+        Machine machine = Machine.getMachineByLocation(e.getBlock().getLocation());
         if (machine == null) return;
 
-        machineList.remove(machine);
+        placedMachines.remove(machine);
+        removedMachines.add(machine);
     }
 }

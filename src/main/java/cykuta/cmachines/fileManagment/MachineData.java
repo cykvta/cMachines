@@ -2,7 +2,6 @@ package cykuta.cmachines.fileManagment;
 
 import cykuta.cmachines.blocks.MachineInstances;
 import cykuta.cmachines.blocks.MachineType;
-import cykuta.cmachines.blocks.machines.Crusher;
 import cykuta.cmachines.cMachines;
 import cykuta.cmachines.blocks.Machine;
 import org.bukkit.Bukkit;
@@ -62,11 +61,11 @@ public class MachineData {
         // Saving data in to data.yml
         String path = "machines." + machine.getUUIDStringify();
         data.set(path + ".type", machine.getType().toString());
-        data.set(path + ".inventory", machine.getInventory().getContents());
         data.set(path + ".location.world", machine.getLocation().getWorld().getName());
         data.set(path + ".location.x", machine.getLocation().getX());
         data.set(path + ".location.y", machine.getLocation().getY());
         data.set(path + ".location.z", machine.getLocation().getZ());
+        data.set(path + ".inventory", machine.getInventory().getContents());
     }
 
     public Machine getMachine(String uuid){
@@ -86,6 +85,4 @@ public class MachineData {
         machine.setUUID(UUID.fromString(uuid));
         return machine;
     }
-
-
 }

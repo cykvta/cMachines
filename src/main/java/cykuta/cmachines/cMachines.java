@@ -1,8 +1,10 @@
 package cykuta.cmachines;
 
+import cykuta.cmachines.Utils.Block;
 import cykuta.cmachines.blocks.MachineInstances;
 import cykuta.cmachines.events.InteractEvent;
 import cykuta.cmachines.events.InventoryEvent;
+import cykuta.cmachines.fileManagment.MachineData;
 import cykuta.cmachines.fileManagment.MachineSavePool;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,6 +18,11 @@ public final class cMachines extends JavaPlugin {
 
         registerEvents();
         MachineInstances.initializeMachineList();
+    }
+
+    @Override
+    public void onDisable(){
+        Block.saveAll(new MachineData());
     }
 
     private void registerEvents(){

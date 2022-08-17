@@ -10,7 +10,7 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.UUID;
 
-import static cykuta.cmachines.blocks.MachineInstances.machineList;
+import static cykuta.cmachines.blocks.MachineInstances.placedMachines;
 
 public class Machine {
     protected UUID uuid;
@@ -70,14 +70,13 @@ public class Machine {
 
     // Utils
     public static Machine getMachineByLocation(Location blockLocation){
-        Machine machine = null;
         String location = Block.blockLocationConverter(blockLocation);
 
-        for(Machine i : machineList){
-            if (!location.equals( Block.blockLocationConverter(i.getLocation()) )) break;
-            machine = i;
+        for(Machine tempMachine : placedMachines){
+            if (!location.equals(Block.blockLocationConverter(tempMachine.getLocation()))) continue;
+            return tempMachine;
         }
-        return machine;
+        return null;
     }
 
     public static Machine createMachineByType(MachineType type, Location machineLocation){
