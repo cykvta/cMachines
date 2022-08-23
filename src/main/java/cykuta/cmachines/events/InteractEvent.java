@@ -6,9 +6,12 @@ import cykuta.cmachines.blocks.MachineType;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.Events.CustomBlockInteractEvent;
 import dev.lone.itemsadder.api.Events.CustomBlockPlaceEvent;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 
@@ -26,7 +29,7 @@ public class InteractEvent implements Listener {
         if (!MachineInstances.checkIfMachineExist(machine)) return;
 
         // Open machine inventory
-        e.getPlayer().openInventory(machine.getInventory());
+        machine.openInventory(e.getPlayer());
         e.setCancelled(true);
     }
 
@@ -40,8 +43,7 @@ public class InteractEvent implements Listener {
         }
         if (type == null) return;
 
-        Machine machine = Machine.createMachineByType(type, e.getBlock().getLocation().toBlockLocation());
-        placedMachines.add(machine);
+        Machine.createMachineByType(type, e.getBlock().getLocation().toBlockLocation());
     }
 
     @EventHandler
@@ -55,7 +57,11 @@ public class InteractEvent implements Listener {
         Machine machine = Machine.getMachineByLocation(e.getBlock().getLocation());
         if (machine == null) return;
 
-        placedMachines.remove(machine);
-        removedMachines.add(machine);
+        for (ItemStack item : machine.getInventory().getContents()){
+            if (item == null || item.getType() == Material.AIR) continue;
+            machine.getWorld().dropItem(machine.getLocation(), item);
+        }
+        
+        machine.delete();
     }
 }
