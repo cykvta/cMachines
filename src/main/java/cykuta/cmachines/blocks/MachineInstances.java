@@ -10,6 +10,17 @@ public class MachineInstances {
     public static List<Machine> placedMachines = new ArrayList<>();
     public static List<Machine> removedMachines = new ArrayList<>();
 
+    // List management
+    public static void removeMachine(Machine machine){
+        placedMachines.remove(machine);
+        removedMachines.add(machine);
+    }
+
+    public static void addMachine(Machine machine){
+        placedMachines.add(machine);
+    }
+
+    // Utils
     public static boolean checkIfMachineExist(Machine machine){
         return placedMachines.contains(machine);
     }
