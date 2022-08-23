@@ -6,6 +6,8 @@ import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import java.util.UUID;
@@ -26,12 +28,19 @@ public class Machine {
         this.inventoryBackground = inventoryBackground;
         this.uuid = UUID.randomUUID();
         this.machineType = machineType;
-        createInventory();
-    }
-
-    private void createInventory(){
         this.inventory = Bukkit.createInventory(new MachineHolder(this), inventorySize,
                 ChatColor.WHITE + this.inventoryBackground.applyPixelsOffset(-16));
+
+        MachineInstances.addMachine(this);
+    }
+
+    // Utils
+    public void delete(){
+        MachineInstances.removeMachine(this);
+    }
+
+    public void openInventory(Player player) {
+        player.openInventory(this.inventory);
     }
 
     // Getters
@@ -59,6 +68,10 @@ public class Machine {
         return this.uuid;
     }
 
+    public World getWorld() {
+        return this.getLocation().getWorld();
+    }
+
     public String getUUIDStringify(){
         return this.uuid.toString();
     }
@@ -68,7 +81,7 @@ public class Machine {
         this.uuid = uuid;
     }
 
-    // Utils
+    // Statics
     public static Machine getMachineByLocation(Location blockLocation){
         String location = Block.blockLocationConverter(blockLocation);
 
