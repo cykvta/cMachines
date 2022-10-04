@@ -77,6 +77,10 @@ public class Machine {
     }
 
     // Setters
+    public void setInventoryBackground(FontImageWrapper inventoryBackground){
+        this.inventoryBackground = inventoryBackground;
+    }
+
     public void setUUID(UUID uuid) {
         this.uuid = uuid;
     }
